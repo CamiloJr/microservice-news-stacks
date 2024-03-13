@@ -1,0 +1,75 @@
+spring:
+  application:
+    name: book-ms
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver #createDatabaseIfNotExist=true&
+    url: jdbc:mysql://localhost:3306/book_db?useTimezone=true&serverTimezone=UTC
+    username: root
+    password:
+  jackson:  # para montar entidades que retornam valores null não armazenados no db
+    default-property-inclusion: NON_NULL
+    serialization:
+      fail-on-empty-beans: false
+  jpa:
+    open-in-view: true
+    generate-ddl: true
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+    show-sql: true
+  flyway:
+    url: jdbc:mysql://localhost:3306/book_db?useTimezone=true&serverTimezone=UTC
+    user: root
+    password:
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+  zipkin:
+    base-url: http://localhost:9411/
+  sleuth:
+    sampler:
+      probability: 1.0
+
+server:
+  port: 8100
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+
+resilience4j:
+  bulkhead:
+    instances:
+      default:
+        maxConcurrentCalls: 10
+  ratelimiter:    #Verificar o que é o ratelimiter - acho que limita a quantidade de acesso a uma rota
+    instances:
+      default:
+        limitForPeriod: 2        # a cada 10s tentar fazer 2 requisicoes
+        limitRefreshPeriod: 10s  # tentar fazer requisicoes em 10s
+  retry:
+    instances:
+      default:
+        maxAttempts: 3
+      qualquer-nome:
+        maxAttempts: 5
+        waitDuration: 2s
+      foo-bar:
+        maxAttempts: 5
+        waitDuration: 2s
+        enableExponentialBackoff: false # espera de forma exponencial. A cada retry demora mais...
+
+springdoc:
+  show-actuator: true
+#  api-docs:
+#    path: book-service/v3/api-docs
+
+management:   # configuração da observalidade do zipkin e micrometer tracin
+  tracing:
+    sampling:
+      probability: 1.0  # 100% de todas as requisicoes e respostas - nao eh bom por questoes de perfomance
