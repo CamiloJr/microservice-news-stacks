@@ -80,8 +80,8 @@ services:
     image: camilobarreto/cambio-ms:latest
     restart: always
     build:
-      context: .
-      dockerfile: cambio-ms/Dockerfile
+      context: ./cambio-ms
+      dockerfile: Dockerfile
     environment:
       TZ: America/Sao_Paulo
       EUREKA.CLIENT.SERVICEURL.DEFAULTZONE: http://naming-server:8761/eureka
@@ -107,8 +107,8 @@ services:
     image: camilobarreto/book-ms:latest
     restart: always
     build:
-      context: .
-      dockerfile: book-ms/Dockerfile
+      context: ./book-ms
+      dockerfile: Dockerfile
     environment:
       TZ: America/Sao_Paulo
       EUREKA.CLIENT.SERVICEURL.DEFAULTZONE: http://naming-server:8761/eureka
