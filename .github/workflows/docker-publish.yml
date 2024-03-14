@@ -28,6 +28,10 @@ jobs:
       - name: Build Cambio Microservice Jar
         working-directory: ./cambio-ms
         run: mvn clean package -DskipTests
+        
+      - name: Build Book Microservice Jar
+        working-directory: ./book-ms
+        run: mvn clean package -DskipTests
 
       - name: Docker Compose Build
         working-directory: .
