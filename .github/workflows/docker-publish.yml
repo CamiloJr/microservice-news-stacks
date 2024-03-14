@@ -36,4 +36,3 @@ jobs:
       - name: Docker Compose Build
         working-directory: .
         run: docker compose build
-
