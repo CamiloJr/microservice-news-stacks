@@ -36,3 +36,15 @@ jobs:
       - name: Docker Compose Build
         working-directory: ./
         run: docker compose build
+
+      - name: Push to DockerHub Container Registry
+        working-directory: ./
+        run: |
+          docker tag ${{ secrets.DOCKER_USERNAME }}/naming-server:0.0.1-SNAPSHOT ${{ secrets.DOCKER_USERNAME }}/naming-server:${{ github.run_id }}
+          docker tag ${{ secrets.DOCKER_USERNAME }}/gateway:0.0.1-SNAPSHOT ${{ secrets.DOCKER_USERNAME }}/gateway:${{ github.run_id }}
+          docker tag ${{ secrets.DOCKER_USERNAME }}/book-ms:latest ${{ secrets.DOCKER_USERNAME }}/book-ms:${{ github.run_id }}
+          docker tag ${{ secrets.DOCKER_USERNAME }}/cambio-ms:latest ${{ secrets.DOCKER_USERNAME }}/cambio-ms:${{ github.run_id }}
+          docker push ${{ secrets.DOCKER_USERNAME }}/naming-server:${{ github.run_id }}
+          docker push ${{ secrets.DOCKER_USERNAME }}/gateway:${{ github.run_id }}
+          docker push ${{ secrets.DOCKER_USERNAME }}/book-ms:${{ github.run_id }}
+          docker push ${{ secrets.DOCKER_USERNAME }}/cambio-ms:${{ github.run_id }}
